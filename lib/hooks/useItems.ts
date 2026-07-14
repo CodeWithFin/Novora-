@@ -57,6 +57,18 @@ export function useDeleteItem() {
   });
 }
 
+export function useDeleteAllItems() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: () => itemsApi.deleteAllItems(),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['items'] });
+      qc.invalidateQueries({ queryKey: ['dashboard'] });
+      qc.invalidateQueries({ queryKey: ['transactions'] });
+      qc.invalidateQueries({ queryKey: ['stock'] });
+    },
+  });
+}
 
 export function useBatchCreateItems() {
   const qc = useQueryClient();

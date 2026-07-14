@@ -3,13 +3,15 @@
 import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { Plus, Rows3 } from 'lucide-react';
+import { Plus, Rows3, Trash2 } from 'lucide-react';
+import { toast } from 'sonner';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { ItemsTable } from '@/components/items/ItemsTable';
 import { ItemForm } from '@/components/items/ItemForm';
 import { FilterBar } from '@/components/ui/FilterBar';
 import { SearchInput } from '@/components/ui/SearchInput';
 import { Button } from '@/components/ui/button';
+import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import {
   Select,
   SelectContent,
@@ -17,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useItems } from '@/lib/hooks/useItems';
+import { useDeleteAllItems, useItems } from '@/lib/hooks/useItems';
 import { useDebounce } from '@/lib/hooks/useDebounce';
 import { useAuth } from '@/lib/hooks/useAuth';
 
@@ -28,11 +30,14 @@ function ItemsPageContent() {
   const [category, setCategory] = useState('');
   const [status, setStatus] = useState(searchParams.get('status') ?? '');
   const [addOpen, setAddOpen] = useState(false);
+  const [deleteAllOpen, setDeleteAllOpen] = useState(false);
   const [defaultBarcode, setDefaultBarcode] = useState('');
   const debouncedSearch = useDebounce(search);
-  const { isViewer } = useAuth();
+  const { isViewer, isAdmin } = useAuth();
+  const deleteAll = useDeleteAllItems();
 
   const categoriesQuery = useItems({ limit: 100 });
+  const totalItems = categoriesQuery.data?.meta?.total ?? 0;
   const categories = [
     ...new Set(
       (categoriesQuery.data?.data ?? [])
@@ -56,7 +61,17 @@ function ItemsPageContent() {
         subtitle="Add products by name — stock can come with them or later."
       >
         {!isViewer && (
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
+            {isAdmin && totalItems > 0 && (
+              <Button
+                variant="outline"
+                onClick={() => setDeleteAllOpen(true)}
+                className="text-danger border-danger/40 hover:bg-danger/5"
+              >
+                <Trash2 className="mr-2 h-4 w-4" />
+                Delete all
+              </Button>
+            )}
             <Button variant="outline" asChild>
               <Link href="/items/new">
                 <Rows3 className="mr-2 h-4 w-4" />
@@ -119,6 +134,31 @@ function ItemsPageContent() {
         }}
         categories={categories}
         defaultBarcode={defaultBarcode}
+      />
+
+      <ConfirmDialog
+        open={deleteAllOpen}
+        onOpenChange={setDeleteAllOpen}
+        title="Delete all products?"
+        description="This permanently removes every product, their stock batches, and related stock history for this organization. This cannot be undone."
+        confirmLabel="Delete all products"
+        variant="destructive"
+        loading={deleteAll.isPending}
+        onConfirm={async () => {
+          try {
+            const result = await deleteAll.mutateAsync();
+            toast.success(
+              result.deleted === 0
+                ? 'No products to delete'
+                : `Deleted ${result.deleted} product${result.deleted === 1 ? '' : 's'}`
+            );
+          } catch (err) {
+            toast.error(
+              err instanceof Error ? err.message : 'Failed to delete products'
+            );
+            throw err;
+          }
+        }}
       />
     </div>
   );

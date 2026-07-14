@@ -421,6 +421,13 @@ export async function deleteItem(sql: Sql, orgId: string, itemId: string) {
   if (!item) throw new NotFoundError('Item not found');
 }
 
+export async function deleteAllItems(sql: Sql, orgId: string) {
+  const deleted = await sql<{ id: string }[]>`
+    DELETE FROM items WHERE org_id = ${orgId}
+    RETURNING id
+  `;
+  return { deleted: deleted.length };
+}
 
 export function registerItemRoutes(fastify: FastifyInstance) {
   const auth = [fastify.authenticate] as const;
@@ -490,6 +497,15 @@ export function registerItemRoutes(fastify: FastifyInstance) {
         id,
         request.body as never
       );
+      return reply.send({ success: true, data });
+    }
+  );
+
+  fastify.delete(
+    '/api/v1/items',
+    { preHandler: [fastify.authenticate, fastify.requireRole('admin')] },
+    async (request, reply) => {
+      const data = await deleteAllItems(fastify.db, request.authOrg.id);
       return reply.send({ success: true, data });
     }
   );

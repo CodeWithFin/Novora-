@@ -44,3 +44,8 @@ export async function deleteItem(id: string) {
   );
 }
 
+export async function deleteAllItems() {
+  return getData<{ deleted: number }>(
+    await api.delete('/items', { timeout: 120_000 })
+  );
+}
