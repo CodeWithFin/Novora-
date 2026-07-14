@@ -24,8 +24,6 @@ interface BatchRow {
   barcode: string;
   category: string;
   unit: string;
-  price: string;
-  minStock: string;
 }
 
 const emptyRow = (id: string): BatchRow => ({
@@ -35,8 +33,6 @@ const emptyRow = (id: string): BatchRow => ({
   barcode: '',
   category: '',
   unit: 'pcs',
-  price: '',
-  minStock: '0',
 });
 
 export function BatchAddTable() {
@@ -86,8 +82,7 @@ export function BatchAddTable() {
           barcode: r.barcode.trim() || null,
           category: r.category.trim() || null,
           unit: r.unit.trim() || 'pcs',
-          price: r.price ? parseFloat(r.price) : null,
-          minStock: parseInt(r.minStock, 10) || 0,
+          minStock: 10,
         }))
       );
       toast.success(
@@ -116,7 +111,6 @@ export function BatchAddTable() {
               <TableHead>Barcode</TableHead>
               <TableHead>Category</TableHead>
               <TableHead>Unit</TableHead>
-              <TableHead>Price</TableHead>
               <TableHead className="w-10" />
             </TableRow>
           </TableHeader>
@@ -163,15 +157,6 @@ export function BatchAddTable() {
                   <Input
                     value={row.unit}
                     onChange={(e) => updateRow(row.id, 'unit', e.target.value)}
-                    disabled={isViewer}
-                  />
-                </TableCell>
-                <TableCell>
-                  <Input
-                    type="number"
-                    step="0.01"
-                    value={row.price}
-                    onChange={(e) => updateRow(row.id, 'price', e.target.value)}
                     disabled={isViewer}
                   />
                 </TableCell>

@@ -6,10 +6,14 @@ export const itemSchema = z.object({
   barcode: z.string().optional(),
   category: z.string().optional(),
   unit: z.string().default('pcs'),
-  price: z.coerce.number().optional(),
-  minStock: z.coerce.number().int().min(0).default(0),
+  minStock: z.coerce.number().int().min(0).default(10),
+});
+
+export const batchRowSchema = itemSchema.extend({
+  quantity: z.coerce.number().int().positive().optional().nullable(),
+  expiryDate: z.string().optional().nullable(),
 });
 
 export const batchItemSchema = z.object({
-  items: z.array(itemSchema).min(1),
+  items: z.array(batchRowSchema).min(1),
 });

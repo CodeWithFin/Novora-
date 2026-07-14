@@ -65,8 +65,7 @@ export function ItemForm({
       barcode: '',
       category: '',
       unit: 'pcs',
-      price: undefined,
-      minStock: 0,
+      minStock: 10,
     },
   });
 
@@ -86,7 +85,6 @@ export function ItemForm({
             barcode: item.barcode ?? '',
             category: item.category ?? '',
             unit: item.unit,
-            price: item.price ?? undefined,
             minStock: item.minStock,
           }
         : {
@@ -95,8 +93,7 @@ export function ItemForm({
             barcode: defaultBarcode ?? '',
             category: '',
             unit: 'pcs',
-            price: undefined,
-            minStock: 0,
+            minStock: 10,
           }
     );
 
@@ -113,8 +110,8 @@ export function ItemForm({
       barcode: values.barcode?.trim() || null,
       category: values.category?.trim() || null,
       unit: values.unit?.trim() || 'pcs',
-      price: values.price ?? null,
-      minStock: values.minStock ?? 0,
+      price: null,
+      minStock: values.minStock ?? 10,
     };
 
     try {
@@ -154,8 +151,7 @@ export function ItemForm({
           barcode: '',
           category: '',
           unit: 'pcs',
-          price: undefined,
-          minStock: 0,
+          minStock: 10,
         });
         window.setTimeout(() => nameRef.current?.focus(), 50);
       } else {
@@ -242,7 +238,7 @@ export function ItemForm({
             onClick={() => setShowMore((v) => !v)}
             className="flex w-full items-center justify-between rounded-lg px-1 py-1 text-sm text-foreground-secondary hover:text-foreground-primary"
           >
-            <span>More details (SKU, barcode, price…)</span>
+            <span>More details (SKU, barcode, category…)</span>
             {showMore ? (
               <ChevronUp className="h-4 w-4" />
             ) : (
@@ -304,29 +300,20 @@ export function ItemForm({
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="price">Price (KES)</Label>
+                <Label htmlFor="minStock">Low-stock alert at</Label>
                 <Input
-                  id="price"
+                  id="minStock"
                   type="number"
-                  step="0.01"
-                  {...register('price')}
+                  min={0}
+                  {...register('minStock')}
                   disabled={isViewer}
                 />
+                {errors.minStock && (
+                  <p className="text-xs text-danger">
+                    {errors.minStock.message}
+                  </p>
+                )}
               </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="minStock">Low-stock alert at</Label>
-              <Input
-                id="minStock"
-                type="number"
-                min={0}
-                {...register('minStock')}
-                disabled={isViewer}
-              />
-              {errors.minStock && (
-                <p className="text-xs text-danger">{errors.minStock.message}</p>
-              )}
             </div>
           </div>
 

@@ -18,7 +18,7 @@ import { ItemStatusBadge } from '@/components/items/ItemStatusBadge';
 import { ItemForm } from '@/components/items/ItemForm';
 import { useItems, useDeleteItem } from '@/lib/hooks/useItems';
 import { useAuth } from '@/lib/hooks/useAuth';
-import { formatCurrency, formatDate, daysUntil } from '@/shared/utils/format';
+import { formatDate, daysUntil } from '@/shared/utils/format';
 import { getStockStatus, getExpiryUrgency } from '@/shared/utils/stock';
 import type { Item } from '@/shared/types/item';
 import { toast } from 'sonner';
@@ -130,7 +130,6 @@ export function ItemsTable({ search, category, status, onAdd }: ItemsTableProps)
               <TableHead>SKU</TableHead>
               <TableHead>Category</TableHead>
               <TableHead>Unit</TableHead>
-              <TableHead>Price</TableHead>
               <TableHead>Stock</TableHead>
               <TableHead>Min</TableHead>
               <TableHead>Status</TableHead>
@@ -161,9 +160,6 @@ export function ItemsTable({ search, category, status, onAdd }: ItemsTableProps)
                     </TableCell>
                     <TableCell>{item.category ?? '—'}</TableCell>
                     <TableCell>{item.unit}</TableCell>
-                    <TableCell>
-                      {item.price != null ? formatCurrency(item.price) : '—'}
-                    </TableCell>
                     <TableCell className="font-mono">{item.totalStock}</TableCell>
                     <TableCell className="font-mono">{item.minStock}</TableCell>
                     <TableCell>
@@ -194,7 +190,7 @@ export function ItemsTable({ search, category, status, onAdd }: ItemsTableProps)
                   </TableRow>
                   {isOpen && item.batches?.length > 0 && (
                     <TableRow>
-                      <TableCell colSpan={isViewer ? 9 : 10} className="bg-raised/30 p-0">
+                      <TableCell colSpan={isViewer ? 8 : 9} className="bg-raised/30 p-0">
                         <BatchBreakdown batches={item.batches} />
                       </TableCell>
                     </TableRow>
@@ -244,10 +240,7 @@ export function ItemsTable({ search, category, status, onAdd }: ItemsTableProps)
                 <div className="mt-3 border-t border-border-subtle pt-3 text-sm text-foreground-secondary">
                   <p>Category: {item.category ?? '—'}</p>
                   <p>Unit: {item.unit}</p>
-                  <p>
-                    Price:{' '}
-                    {item.price != null ? formatCurrency(item.price) : '—'}
-                  </p>
+                  <p>Min stock: {item.minStock}</p>
                   {item.batches?.length > 0 && (
                     <BatchBreakdown batches={item.batches} className="mt-2" />
                   )}
