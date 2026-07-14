@@ -57,13 +57,17 @@ export function useDeleteItem() {
   });
 }
 
+
 export function useBatchCreateItems() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (items: Partial<Item>[]) => itemsApi.batchCreateItems(items),
+    mutationFn: (items: itemsApi.BatchCreateItemInput[]) =>
+      itemsApi.batchCreateItems(items),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['items'] });
       qc.invalidateQueries({ queryKey: ['dashboard'] });
+      qc.invalidateQueries({ queryKey: ['transactions'] });
+      qc.invalidateQueries({ queryKey: ['stock'] });
     },
   });
 }

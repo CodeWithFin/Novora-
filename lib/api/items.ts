@@ -23,9 +23,14 @@ export async function createItem(data: Partial<Item>) {
   return getData<Item>(await api.post('/items', data));
 }
 
-export async function batchCreateItems(items: Partial<Item>[]) {
-  return getData<{ created: number; skipped: number }>(
-    await api.post('/items/batch', { items })
+export type BatchCreateItemInput = Partial<Item> & {
+  quantity?: number | null;
+  expiryDate?: string | null;
+};
+
+export async function batchCreateItems(items: BatchCreateItemInput[]) {
+  return getData<{ created: number; skipped: number; stocked: number }>(
+    await api.post('/items/batch', { items }, { timeout: 120_000 })
   );
 }
 
@@ -38,3 +43,4 @@ export async function deleteItem(id: string) {
     await api.delete(`/items/${id}`)
   );
 }
+

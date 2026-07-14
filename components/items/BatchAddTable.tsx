@@ -91,7 +91,9 @@ export function BatchAddTable() {
         }))
       );
       toast.success(
-        `${result.created} items added, ${result.skipped} already existed`
+        `${result.created} items added, ${result.skipped} already existed${
+          result.stocked ? `, ${result.stocked} stocked in` : ''
+        }`
       );
       router.push('/items');
     } catch (err) {

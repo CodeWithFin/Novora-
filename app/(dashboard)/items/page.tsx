@@ -60,7 +60,7 @@ function ItemsPageContent() {
             <Button variant="outline" asChild>
               <Link href="/items/new">
                 <Rows3 className="mr-2 h-4 w-4" />
-                Add many
+                Add many / Upload
               </Link>
             </Button>
             <Button onClick={() => setAddOpen(true)}>
