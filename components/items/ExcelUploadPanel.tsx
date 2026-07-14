@@ -271,6 +271,20 @@ export function ExcelUploadPanel() {
         </ul>
       )}
 
+      {rows.length > 0 && !isViewer && (
+        <div className="sticky top-0 z-10 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border-subtle bg-surface px-4 py-3 shadow-sm">
+          <p className="text-sm text-foreground-secondary">
+            {rows.length} products ready
+            {withQty > 0 ? ` · ${withQty} with stock to bring in` : ''}
+          </p>
+          <Button onClick={handleImport} disabled={batchCreate.isPending}>
+            {batchCreate.isPending
+              ? `Importing ${rows.length} products…`
+              : `Import ${rows.length} products`}
+          </Button>
+        </div>
+      )}
+
       {rows.length > 0 && (
         <>
           <div className="overflow-x-auto rounded-lg border border-border-subtle">
@@ -309,20 +323,6 @@ export function ExcelUploadPanel() {
             <p className="text-sm text-foreground-muted">
               Showing first 50 of {rows.length} rows.
             </p>
-          )}
-
-          {!isViewer && (
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <p className="text-sm text-foreground-secondary">
-                {rows.length} products
-                {withQty > 0 ? ` · ${withQty} with stock to bring in` : ''}
-              </p>
-              <Button onClick={handleImport} disabled={batchCreate.isPending}>
-                {batchCreate.isPending
-                  ? `Importing ${rows.length} products…`
-                  : `Import ${rows.length} products`}
-              </Button>
-            </div>
           )}
         </>
       )}
