@@ -1,0 +1,91 @@
+/* Extra Canvas playfulness used inside the authenticated app */
+.app-fun .sticky-note {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-height: 7.5rem;
+  padding: 1.15rem 1.2rem 1.1rem;
+  font-family: var(--font-patrick), 'Patrick Hand', cursive;
+  font-weight: 700;
+  line-height: 1.15;
+  color: #050505;
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.app-fun .sticky-note:hover {
+  transform: translateY(-4px) rotate(0deg) !important;
+  box-shadow: 0 16px 28px rgba(15, 23, 42, 0.14);
+}
+
+.app-fun .sticky-tape {
+  position: absolute;
+  top: -10px;
+  left: 42%;
+  width: 56px;
+  height: 16px;
+  background: rgba(90, 95, 105, 0.28);
+  transform: rotate(4deg);
+}
+
+.app-fun .sticky-green { background: #a8efcf; }
+.app-fun .sticky-yellow { background: #ffef9d; }
+.app-fun .sticky-orange { background: #ffc4a6; }
+.app-fun .sticky-cyan { background: #bcecff; }
+.app-fun .sticky-pink { background: #f4a6cd; }
+
+.app-fun .rotate-n3 { transform: rotate(-3deg); }
+.app-fun .rotate-2 { transform: rotate(2deg); }
+.app-fun .rotate-n2 { transform: rotate(-2deg); }
+.app-fun .rotate-3 { transform: rotate(3deg); }
+
+.app-fun .hand-title {
+  font-family: var(--font-chewy), Chewy, cursive;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+}
+
+.app-fun .hand-copy {
+  font-family: var(--font-patrick), 'Patrick Hand', cursive;
+  font-weight: 700;
+}
+
+.app-fun .sketch-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.app-fun .sketch-underline::after {
+  content: '';
+  position: absolute;
+  left: -2%;
+  right: -2%;
+  bottom: -2px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--color-primary);
+  transform: rotate(-2deg);
+}
+
+.app-fun .canvas-toolbar-fab {
+  border: 2px solid #050505;
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.08), 0 14px 28px rgba(19, 168, 255, 0.28);
+}
+
+.app-fun main {
+  position: relative;
+}
+
+.app-fun .fun-floaters {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.app-fun .fun-content {
+  position: relative;
+  z-index: 1;
+}

@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Canvas / Novora light artboard */
+  --bg-base: #ffffff;
+  --bg-surface: #ffffff;
+  --bg-raised: #f4f7fb;
+  --bg-overlay: #ffffff;
+  --color-primary: #13a8ff;
+  --color-primary-glow: rgba(19, 168, 255, 0.22);
+  --color-accent: #f59e0b;
+  --color-accent-glow: rgba(245, 158, 11, 0.16);
+  --border-subtle: #ededed;
+  --border-default: #d9dee8;
+  --border-strong: #050505;
+  --text-primary: #070707;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+  --color-info: #13a8ff;
+  --grid-line: rgba(15, 23, 42, 0.075);
+}
+
+@layer base {
+  * {
+    @apply border-border-subtle;
+  }
+
+  body {
+    @apply bg-base text-foreground-primary font-sans antialiased;
+    background-color: #ffffff;
+    background-image:
+      linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+    background-size: 48px 48px;
+    min-height: 100vh;
+  }
+
+  ::selection {
+    background: rgba(19, 168, 255, 0.25);
+  }
+}
+
+@layer utilities {
+  .glass {
+    background-color: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(14px);
+    border: 1px solid var(--border-default);
+    box-shadow: 0 14px 38px rgba(15, 23, 42, 0.08);
+  }
+
+  .glow-primary {
+    box-shadow: 0 8px 0 rgba(0, 0, 0, 0.04), 0 12px 28px var(--color-primary-glow);
+  }
+
+  .glow-amber {
+    box-shadow: 0 8px 0 rgba(0, 0, 0, 0.04), 0 12px 28px var(--color-accent-glow);
+  }
+
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      var(--bg-raised) 0%,
+      #e8f6ff 50%,
+      var(--bg-raised) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite linear;
+  }
+
+  .nav-active {
+    @apply relative bg-primary text-black;
+    border-radius: 8px;
+    font-weight: 700;
+  }
+
+  .canvas-panel {
+    @apply rounded-xl border-2 border-black bg-white shadow-[0_12px_32px_rgba(15,23,42,0.08)];
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: var(--bg-raised);
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: var(--border-default);
+    border-radius: 3px;
+  }
+}
+
+@keyframes shimmer {
+  from {
+    background-position: -200% 0;
+  }
+  to {
+    background-position: 200% 0;
+  }
+}
